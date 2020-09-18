@@ -6,6 +6,7 @@ using AD_LMS.Models.zmm;
 using AD_LMS.Models.Cxy;
 using Microsoft.EntityFrameworkCore;
 using AD_LMS.Models.WzbModels;
+using LMS_API.Models.WzbModels;
 
 namespace AD_LMS.Models
 {
@@ -31,5 +32,6 @@ namespace AD_LMS.Models
         public DbSet<LMS_State> LMS_State { get; set; }
         public DbSet<Collection> Collection { get; set; }
         public DbSet<Record> Record { get; set; }
+        public DbSet<LMS_Ding> LMS_Ding { get; set; }
     }
 }

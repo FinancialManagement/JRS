@@ -33,5 +33,6 @@ namespace AD_LMS.Models
         public DbSet<Collection> Collection { get; set; }
         public DbSet<Record> Record { get; set; }
         public DbSet<LMS_Ding> LMS_Ding { get; set; }
+        public DbSet<LMS_Nation> LMS_Nation { get; set; }
     }
 }

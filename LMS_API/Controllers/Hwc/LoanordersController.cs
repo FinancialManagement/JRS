@@ -11,10 +11,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LMS_API.Controllers.Hwc
 {
-    [Route("api/[controller]/[action]/")]
+    [Route("api/[controller]")]
     [EnableCors("cors")]
     [ApiController]
-    //https://localhost:44341/api/Loanorders/GetDing
     public class LoanordersController : ControllerBase
     {
         public LMScontext db;
@@ -24,7 +23,8 @@ namespace LMS_API.Controllers.Hwc
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<LMS_Ding>>> GetWareHouses()
+        [Route("GetDing")]
+        public async Task<ActionResult<IEnumerable<LMS_Ding>>> GetDing()
         {
             return await db.LMS_Ding.ToListAsync();
         }

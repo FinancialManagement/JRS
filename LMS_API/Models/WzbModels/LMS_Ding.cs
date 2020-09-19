@@ -20,7 +20,7 @@ namespace LMS_API.Models.WzbModels
         /// <summary>
         /// 客户
         /// </summary>
-        public int DName { get; set; }
+        public string DName { get; set; }
         /// <summary>
         /// 申请状态
         /// </summary>

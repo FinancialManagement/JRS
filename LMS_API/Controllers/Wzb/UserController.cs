@@ -25,7 +25,7 @@ namespace LMS_API.Controllers.Wzb
         public UserController(LMScontext db) { this.db = db; }
         [Route("KeShow")]
         [HttpGet]
-        public List<LMS_Ke> KeShow() 
+        public List<LMS_Ke> KeShow(string name) 
         {
             //using (IDbConnection db = new SqlConnection(conn))
             //{
@@ -34,6 +34,7 @@ namespace LMS_API.Controllers.Wzb
             //    return list;
             //}
             var list = from a in db.LMS_Client
+                       where a.SName==name
                        select new LMS_Ke { SId = a.SId, SName = a.SName, SPhone = a.SPhone, SCard = a.SCard, SSfrom = a.SSfrom, SXFrom = a.SXFrom, SKuan = a.SKuan, SBei = a.SBei };
             return list.ToList();
         }
@@ -42,6 +43,13 @@ namespace LMS_API.Controllers.Wzb
         public List<LMS_Ding> DShow()
         {
             return db.LMS_Ding.ToList();
+        }
+        [Route("Add")]
+        [HttpPost]
+        public int Add(LMS_ShouJi m) 
+        {
+            db.LMS_ShouJi.Add(m);                                                      
+            return db.SaveChanges();
         }
     }
 }

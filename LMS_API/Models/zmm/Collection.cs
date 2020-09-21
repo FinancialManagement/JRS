@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 namespace AD_LMS.Models.zmm
 {
     //分页
-    //public class Page1
-    //{
-    //    public List<Collection> Collection { get; set; }
-    //    public int totalCount { get; set; }//总记录数
-    //    public int totalPage { get; set; }//总页数
-    //    public int currentPage { get; set; }//当前页
-    //}
+    public class Page1
+    {
+        public List<Collection> Collection { get; set; }
+        public int totalCount { get; set; }//总记录数
+        public int totalPage { get; set; }//总页数
+        public int currentPage { get; set; }//当前页
+    }
 
     //催收显示列表
     public class Collection

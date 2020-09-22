@@ -8,9 +8,6 @@ namespace LMS_API.Models.Hwc.Product
 {
     public class Client
     {
-        /// <summary>
-        /// 订单主键
-        /// </summary>
         public int DId { get; set; }
         /// <summary>
         /// 编号
@@ -19,7 +16,7 @@ namespace LMS_API.Models.Hwc.Product
         /// <summary>
         /// 客户
         /// </summary>
-        public int DName { get; set; }
+        public string DName { get; set; }
         /// <summary>
         /// 申请状态
         /// </summary>
@@ -84,6 +81,47 @@ namespace LMS_API.Models.Hwc.Product
         /// 贷后管理建议
         /// </summary>
         public string DJy { get; set; }
+        public int Id { get; set; }
+        /// <summary>
+        /// 期数
+        /// </summary>
+        public int Periods { get; set; }
+        /// <summary>
+        /// 账单日期
+        /// </summary>
+        public DateTime BullDate { get; set; }
+        /// <summary>
+        /// 本金
+        /// </summary>
+        [StringLength(50)]
+        public string Capital { get; set; }
+        /// <summary>
+        /// 利息
+        /// </summary>
+        [StringLength(50)]
+        public string Interest { get; set; }
+        /// <summary>
+        /// 罚息
+        /// </summary>
+        [StringLength(50)]
+        public string DefaultInterest { get; set; }
+        /// <summary>
+        /// 待还金额
+        /// </summary>
+        [StringLength(50)]
+        public string AmountMonry { get; set; }
+        /// <summary>
+        /// 还款状态
+        /// </summary>
+        public int RepaymentMoney { get; set; }
+        /// <summary>
+        /// 还款时间
+        /// </summary>
+        public DateTime RepaymentDate { get; set; } = DateTime.Now;
+        /// <summary>
+        /// 订单外键
+        /// </summary>
+        public int DingWai { get; set; }
         public int SId { get; set; }
         /// <summary>
         /// 客户名称
@@ -161,46 +199,13 @@ namespace LMS_API.Models.Hwc.Product
         /// 黑名单
         /// </summary>
         public int SHei { get; set; }
-        public int Id { get; set; }
         /// <summary>
-        /// 期数
+        /// 注册时间
         /// </summary>
-        public int Periods { get; set; }
+        public DateTime STime { get; set; }
         /// <summary>
-        /// 账单日期
+        /// 电子邮箱
         /// </summary>
-        public DateTime BullDate { get; set; }
-        /// <summary>
-        /// 本金
-        /// </summary>
-        [StringLength(50)]
-        public string Capital { get; set; }
-        /// <summary>
-        /// 利息
-        /// </summary>
-        [StringLength(50)]
-        public string Interest { get; set; }
-        /// <summary>
-        /// 罚息
-        /// </summary>
-        [StringLength(50)]
-        public string DefaultInterest { get; set; }
-        /// <summary>
-        /// 待还金额
-        /// </summary>
-        [StringLength(50)]
-        public string AmountMonry { get; set; }
-        /// <summary>
-        /// 还款状态
-        /// </summary>
-        public int RepaymentMoney { get; set; }
-        /// <summary>
-        /// 还款时间
-        /// </summary>
-        public DateTime RepaymentDate { get; set; } = DateTime.Now;
-        /// <summary>
-        /// 订单外键
-        /// </summary>
-        public int DingWai { get; set; }
+        public string SEmail { get; set; }
     }
 }

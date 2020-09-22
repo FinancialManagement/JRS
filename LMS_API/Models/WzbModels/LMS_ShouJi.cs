@@ -28,6 +28,6 @@ namespace AD_LMS.Models.WzbModels
         /// <summary>
         /// 审核时间
         /// </summary>
-        public DateTime JTime { get; set; }
+        public string JTime { get; set; }
     }
 }

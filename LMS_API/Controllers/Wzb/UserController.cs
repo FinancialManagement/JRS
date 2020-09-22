@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Dapper;
 using Newtonsoft.Json;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore;
 
 namespace LMS_API.Controllers.Wzb
 {
@@ -79,7 +81,7 @@ namespace LMS_API.Controllers.Wzb
         }
         [Route("DShow1")]
         [HttpGet]
-        public Page1 DShow1(string name = "", int PageSize = 3, int PageCurrent = 1) 
+        public Page1 DShow1(string name ="", int PageSize = 3, int PageCurrent = 1) 
         {
             var list = db.LMS_Ding.Where(s => s.DSzt == 1 || s.DSzt == 6).ToList();
             if (!string.IsNullOrEmpty(name))
@@ -160,6 +162,52 @@ namespace LMS_API.Controllers.Wzb
                 var name = db.Query<LMS_Ding>(sql).FirstOrDefault().DName;
                 string sql1 = $"select * from LMS_Client where SName='{name}'";
                 return db.Query<LMS_Client>(sql1).FirstOrDefault();
+            }
+        }
+        [Route("XFan4")]
+        [HttpGet]
+        public LMS_Client XFan4(int id)
+        {
+            using (IDbConnection db = new SqlConnection(conn))
+            {
+                string sql1 = $"select * from LMS_Client where SId='{id}'";
+                return db.Query<LMS_Client>(sql1).FirstOrDefault();
+            }
+        }
+        [Route("Xiu1")]
+        [HttpPost]
+        public int Xiu1([FromForm]string m) 
+        {
+            LMS_ShouJi model = JsonConvert.DeserializeObject<LMS_ShouJi>(m);
+            if (model == null)
+            {
+                return 0;
+            }
+            else
+            {
+                var d = db.LMS_Ding.Find(model.SJId);
+                db.Entry(d).State = EntityState.Modified;
+                d.DSzt += 3;
+                db.LMS_ShouJi.Add(model);
+                return db.SaveChanges();
+            }
+        }
+        [Route("Xiu2")]
+        [HttpPost]
+        public int Xiu2([FromForm] string m)
+        {
+            LMS_ShouJi model = JsonConvert.DeserializeObject<LMS_ShouJi>(m);
+            if (model == null)
+            {
+                return 0;
+            }
+            else
+            {
+                var d = db.LMS_Ding.Find(model.SJId);
+                db.Entry(d).State = EntityState.Modified;
+                d.DSzt += 2;
+                db.LMS_ShouJi.Add(model);
+                return db.SaveChanges();
             }
         }
     }

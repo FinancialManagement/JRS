@@ -146,9 +146,21 @@ namespace LMS_API.Controllers.Wzb
         }
         [Route("XFan")]
         [HttpGet]
-        public LMS_Client XFan(int id) 
+        public LMS_Ding XFan(int id) 
         {
-            return db.LMS_Client.Where(s => s.SId == id).FirstOrDefault();
+            return db.LMS_Ding.Where(s => s.DId == id).FirstOrDefault();
+        }
+        [Route("XFan1")]
+        [HttpGet]
+        public LMS_Client XFan1(int id)
+        {
+            using (IDbConnection db=new SqlConnection(conn))
+            {
+                string sql = $"select DName from LMS_Ding where DId={id}";
+                var name = db.Query<LMS_Ding>(sql).FirstOrDefault().DName;
+                string sql1 = $"select * from LMS_Client where SName='{name}'";
+                return db.Query<LMS_Client>(sql1).FirstOrDefault();
+            }
         }
     }
 }

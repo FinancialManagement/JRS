@@ -14,6 +14,8 @@ using Dapper;
 using Newtonsoft.Json;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore;
+using StackExchange.Redis;
+using ServiceStack.Redis;
 
 namespace LMS_API.Controllers.Wzb
 {
@@ -23,6 +25,7 @@ namespace LMS_API.Controllers.Wzb
     [ApiController]
     public class UserController : ControllerBase
     {
+        RedisClient redis = new RedisClient("127.0.0.1",6379);
         private static string conn = "Data Source=10.3.158.43;Initial Catalog=LMS_Finance;User ID=sa;pwd=123456;";
         public LMScontext db;
         public UserController(LMScontext db) { this.db = db; }
@@ -83,35 +86,49 @@ namespace LMS_API.Controllers.Wzb
         [HttpGet]
         public Page1 DShow1(string name ="", int PageSize = 3, int PageCurrent = 1) 
         {
-            var list = db.LMS_Ding.Where(s => s.DSzt == 1 || s.DSzt == 6).ToList();
-            if (!string.IsNullOrEmpty(name))
+            var list1 = new List<LMS_Ding>();
+            list1 = redis.Get<List<LMS_Ding>>("stulist");
+            if (list1==null||list1.Count==0)
             {
-                list = list.Where(s => s.DName == name).ToList();
-            }
-            if (PageCurrent < 1)
-            {
-                PageCurrent = 1;
-            }
-            int count = list.Count();
-            int index = 0;
-            if (count % PageSize == 0)
-            {
-                index = count / PageSize;
+                list1 = db.LMS_Ding.Where(s => s.DSzt == 1 || s.DSzt == 6).ToList();
+                if (!string.IsNullOrEmpty(name))
+                {
+                    list1 = list1.Where(s => s.DName == name).ToList();
+                }
+                if (PageCurrent < 1)
+                {
+                    PageCurrent = 1;
+                }
+                int count = list1.Count();
+                int index = 0;
+                if (count % PageSize == 0)
+                {
+                    index = count / PageSize;
+                }
+                else
+                {
+                    index = count / PageSize + 1;
+                }
+                if (PageCurrent > index)
+                {
+                    PageCurrent = index;
+                }
+                Page1 p = new Page1();
+                p.LMS_Dings = list1.Skip((PageCurrent - 1) * PageSize).Take(PageSize).ToList();
+                p.PageCurrent = PageCurrent;
+                p.PageCount = count;
+                p.PageIndex = index;
+                redis.Set<List<LMS_Ding>>("stulist", list1);
+                return p;
             }
             else
             {
-                index = count / PageSize + 1;
+                Page1 a = new Page1();
+                return a;
             }
-            if (PageCurrent > index)
-            {
-                PageCurrent = index;
-            }
-            Page1 p = new Page1();
-            p.LMS_Dings = list.Skip((PageCurrent - 1) * PageSize).Take(PageSize).ToList();
-            p.PageCurrent = PageCurrent;
-            p.PageCount = count;
-            p.PageIndex = index;
-            return p;
+
+
+            
 
         }
         [Route("DShow")]
@@ -156,6 +173,7 @@ namespace LMS_API.Controllers.Wzb
         [HttpGet]
         public LMS_Client XFan1(int id)
         {
+            
             using (IDbConnection db=new SqlConnection(conn))
             {
                 string sql = $"select DName from LMS_Ding where DId={id}";

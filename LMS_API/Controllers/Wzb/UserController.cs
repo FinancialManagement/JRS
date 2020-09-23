@@ -81,7 +81,7 @@ namespace LMS_API.Controllers.Wzb
             p.PageCount = count;
             p.PageIndex = index;
             return p;
-        }
+        } //分页
         [Route("DShow1")]
         [HttpGet]
         public Page1 DShow1(string name ="", int PageSize = 3, int PageCurrent = 1) 

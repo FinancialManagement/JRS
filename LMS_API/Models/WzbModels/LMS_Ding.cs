@@ -71,6 +71,7 @@ namespace LMS_API.Models.WzbModels
         public string DFMoney { get; set; }
         /// <summary>
         /// 利率
+        ///
         /// </summary>
         public int DLi { get; set; }
         /// <summary>

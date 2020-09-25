@@ -7,6 +7,7 @@ using AD_LMS.Models.Cxy;
 using Microsoft.EntityFrameworkCore;
 using AD_LMS.Models.WzbModels;
 using LMS_API.Models.WzbModels;
+using LMS_API.Models;
 
 namespace AD_LMS.Models
 {
@@ -34,7 +35,7 @@ namespace AD_LMS.Models
         public DbSet<Record> Record { get; set; }
         public DbSet<LMS_Ding> LMS_Ding { get; set; }
         public DbSet<LMS_Nation> LMS_Nation { get; set; }
-
+        public DbSet<UserInfos> UserInfos { get; set; }
         internal object Query<T>(string sql)
         {
             throw new NotImplementedException();

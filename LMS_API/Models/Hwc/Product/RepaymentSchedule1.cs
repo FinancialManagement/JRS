@@ -4,14 +4,55 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace LMS_API.Models.WzbModels
+namespace LMS_API.Models.Hwc.Product
 {
-    public class LMS_Ding
+    public class RepaymentSchedule1
     {
+        [Key]
+        public int Id { get; set; }
+        /// <summary>
+        /// 期数
+        /// </summary>
+        public int Periods { get; set; }
+        /// <summary>
+        /// 账单日期
+        /// </summary>
+        public DateTime BullDate { get; set; }
+        /// <summary>
+        /// 本金
+        /// </summary>
+        [StringLength(50)]
+        public string Capital { get; set; }
+        /// <summary>
+        /// 利息
+        /// </summary>
+        [StringLength(50)]
+        public string Interest { get; set; }
+        /// <summary>
+        /// 罚息
+        /// </summary>
+        [StringLength(50)]
+        public string DefaultInterest { get; set; }
+        /// <summary>
+        /// 待还金额
+        /// </summary>
+        [StringLength(50)]
+        public string AmountMonry { get; set; }
+        /// <summary>
+        /// 还款状态
+        /// </summary>
+        public int RepaymentMoney { get; set; }
+        /// <summary>
+        /// 还款时间
+        /// </summary>
+        public DateTime RepaymentDate { get; set; } = DateTime.Now;
+        /// <summary>
+        /// 订单外键
+        /// </summary>
+        public int DingWai { get; set; }
         /// <summary>
         /// 订单主键
         /// </summary>
-        [Key]
         public int DId { get; set; }
         /// <summary>
         /// 编号
@@ -20,7 +61,7 @@ namespace LMS_API.Models.WzbModels
         /// <summary>
         /// 客户
         /// </summary>
-        public string DName { get; set; }
+        public int DName { get; set; }
         /// <summary>
         /// 申请状态
         /// </summary>
@@ -71,7 +112,6 @@ namespace LMS_API.Models.WzbModels
         public string DFMoney { get; set; }
         /// <summary>
         /// 利率
-        ///
         /// </summary>
         public int DLi { get; set; }
         /// <summary>
@@ -86,6 +126,5 @@ namespace LMS_API.Models.WzbModels
         /// 贷后管理建议
         /// </summary>
         public string DJy { get; set; }
-
     }
 }

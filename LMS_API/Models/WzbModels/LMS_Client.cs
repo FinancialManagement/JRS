@@ -89,5 +89,14 @@ namespace AD_LMS.Models.WzbModels
         /// 黑名单
         /// </summary>
         public int SHei { get; set; }
+        /// <summary>
+        /// 注册时间
+        /// </summary>
+        public DateTime STime { get; set; }
+        /// <summary>
+        /// 电子邮箱
+        /// </summary>
+        public string SEmail { get; set; }
+        public string Shengri { get; set; }
     }
 }

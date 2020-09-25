@@ -20,14 +20,14 @@ namespace AD_LMS.Models.WzbModels
         /// <summary>
         /// 审核人
         /// </summary>
-        public int JName { get; set; }
+        public string JName { get; set; }
         /// <summary>
         /// 审核内容
         /// </summary>
-        public int JNei { get; set; }
+        public string JNei { get; set; }
         /// <summary>
         /// 审核时间
         /// </summary>
-        public int JTime { get; set; }
+        public string JTime { get; set; }
     }
 }

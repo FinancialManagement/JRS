@@ -15,5 +15,6 @@ namespace LMS_API.Models.WzbModels
         public string SXFrom { get; set; }
         public int SKuan { get; set; }
         public string SBei { get; set; }
+        public DateTime STime { get; set; }
     }
 }

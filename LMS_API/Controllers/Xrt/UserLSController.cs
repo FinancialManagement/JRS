@@ -106,7 +106,7 @@ namespace LMS_API.Controllers.Xrt
             }
         }
         /// <summary>
-        /// 订单
+        /// 订单表
         /// </summary>
         /// <param name="s"></param>
         /// <returns></returns>

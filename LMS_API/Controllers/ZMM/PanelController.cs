@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AD_LMS.Models;
@@ -60,12 +61,11 @@ namespace LMS_API.Controllers.ZMM
         {
             return await db.RepaymentSchedule.ToListAsync();
         }
-
         [Route("GetShow3")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<LMS_Ding>>> GetShow3()
         {
-            return await db.LMS_Ding.Where(m => m.DSzt == 16).ToListAsync();
+            return await db.LMS_Ding.Where(m => m.DSzt == 13).ToListAsync();
         }
         [Route("GetShow4")]
         [HttpGet]
@@ -77,9 +77,27 @@ namespace LMS_API.Controllers.ZMM
         [HttpGet]
         public async Task<ActionResult<IEnumerable<LMS_Ding>>> GetShow5()
         {
-            return await db.LMS_Ding.Where(m => m.DSzt == 13).ToListAsync();
+            return await db.LMS_Ding.Where(m => m.DSzt == 16).ToListAsync();
         }
 
+        //放款
+        [Route("GetShow7")]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<LMS_Ding>>> GetShow7()
+        {
+            return await db.LMS_Ding.ToListAsync();
+        }
+
+        //贷后
+        [Route("GetShow6")]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<LMS_Ding>>> GetShow6()
+        {
+            return await db.LMS_Ding.ToListAsync();
+        }
+
+      
+    
 
 
     }

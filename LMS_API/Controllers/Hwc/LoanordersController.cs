@@ -32,7 +32,7 @@ namespace LMS_API.Controllers.Hwc
         public LMScontext db;
         public LoanordersController(LMScontext db) { this.db = db; }
         /// <summary>
-        ///待放款订单
+        ///待放款订单1
         /// </summary>
         /// <returns></returns>
         [HttpGet]

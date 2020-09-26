@@ -131,7 +131,7 @@ namespace LMS_API.Controllers.Hwc
         /// <summary>
         /// 账单列表1
         /// </summary>
-        /// <param name="name"></param>
+        /// <param name="name"></param>1
         /// <param name="PageSize"></param>
         /// <param name="PageCurrent"></param>
         /// <returns></returns>

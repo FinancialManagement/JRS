@@ -158,7 +158,7 @@ namespace LMS_API.Controllers.Wzb
             return p;
         }
         [Route("DShow3")]
-        [HttpGet]
+        [HttpGet]//11
         public Page1 DShow3(string name = "", int PageSize = 3, int PageCurrent = 1)
         {
             var list1 = new List<LMS_Ding>();

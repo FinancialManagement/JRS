@@ -97,5 +97,6 @@ namespace AD_LMS.Models.WzbModels
         /// 电子邮箱
         /// </summary>
         public string SEmail { get; set; }
+        public string Shengri { get; set; }
     }
 }

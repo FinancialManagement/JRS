@@ -1,4 +1,6 @@
-﻿ using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -24,6 +26,7 @@ namespace LMS_API.Models.WzbModels
         /// <summary>
         /// 申请状态
         /// </summary>
+        //[JsonConverter(typeof(StringEnumConverter))]
         public int DSzt { get; set; }
         /// <summary>
         /// 贷款金额
@@ -71,6 +74,7 @@ namespace LMS_API.Models.WzbModels
         public string DFMoney { get; set; }
         /// <summary>
         /// 利率
+        ///
         /// </summary>
         public int DLi { get; set; }
         /// <summary>
@@ -86,5 +90,24 @@ namespace LMS_API.Models.WzbModels
         /// </summary>
         public string DJy { get; set; }
 
+    }
+    public enum DSzt 
+    {
+        初审中 = 1 ,
+        初审通过 = 2,
+        初审驳回 = 3,
+        复审中 = 4,
+        复审通过 = 5,
+        复审驳回 = 6,
+        终审中 = 7,
+        终审通过 = 8,
+        终审驳回 = 9,
+        放款中 = 10,
+        还款中 = 11,
+        逾期中 = 12,
+        已还清 = 13,
+        合同签订 = 14,
+        等待放款 = 15,
+        未还款 = 16,
     }
 }

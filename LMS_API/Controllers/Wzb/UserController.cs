@@ -25,10 +25,13 @@ namespace LMS_API.Controllers.Wzb
     [ApiController]
     public class UserController : ControllerBase
     {
+        //config set stop-writes-on-bgsave-error no
         RedisClient redis = new RedisClient("127.0.0.1",6379);
         private static string conn = "Data Source=10.3.158.43;Initial Catalog=LMS_Finance;User ID=sa;pwd=123456;";
-        public LMScontext db;
+        public LMScontext db;//11
         public UserController(LMScontext db) { this.db = db; }
+        LogHelper log = new LogHelper();
+        string name = "";
         [Route("KeShow")]
         [HttpGet]
         public Page KeShow(string name="",int PageSize=3,int PageCurrent=1) 
@@ -39,6 +42,8 @@ namespace LMS_API.Controllers.Wzb
             //    var list = db.Query<LMS_Client>(sql).ToList();
             //    return list;
             //}
+            name = "小李子";
+            log.Add("登录了系统",DateTime.Now,"/User/KeShow");
             var list = from a in db.LMS_Client
                            //where a.SName == name
                        select new LMS_Ke { SId = a.SId, SName = a.SName, SPhone = a.SPhone, SCard = a.SCard, SSfrom = a.SSfrom, SXFrom = a.SXFrom, SKuan = a.SKuan, SBei = a.SBei };
@@ -48,7 +53,6 @@ namespace LMS_API.Controllers.Wzb
                   list = from a in db.LMS_Client
                        where a.SName==name
                        select new LMS_Ke { SId = a.SId, SName = a.SName, SPhone = a.SPhone, SCard = a.SCard, SSfrom = a.SSfrom, SXFrom = a.SXFrom, SKuan = a.SKuan, SBei = a.SBei };
-
             }
             else
             {
@@ -84,11 +88,11 @@ namespace LMS_API.Controllers.Wzb
         } //分页
         [Route("DShow1")]
         [HttpGet]
-        public Page1 DShow1(string name ="", int PageSize = 3, int PageCurrent = 1) 
+        public Page1 DShow1(string name="",int PageSize = 3, int PageCurrent = 1) 
         {
-            var list1 = new List<LMS_Ding>();
-            list1 = redis.Get<List<LMS_Ding>>("stulist");
-                list1 = db.LMS_Ding.Where(s => s.DSzt == 1 || s.DSzt == 6).ToList();
+                var list1 = new List<LMS_Ding>();
+                list1 = redis.Get<List<LMS_Ding>>("stulist");
+                list1 = db.LMS_Ding.Where(s => s.DSzt ==1).ToList();
                 if (!string.IsNullOrEmpty(name))
                 {
                     list1 = list1.Where(s => s.DName == name).ToList();
@@ -125,7 +129,7 @@ namespace LMS_API.Controllers.Wzb
         {
             var list1 = new List<LMS_Ding>();
             list1 = redis.Get<List<LMS_Ding>>("stulist1");
-            list1 = db.LMS_Ding.Where(s => s.DSzt == 3 || s.DSzt == 4).ToList();
+            list1 = db.LMS_Ding.Where(s => s.DSzt == 4||s.DSzt == 3).ToList();
             if (!string.IsNullOrEmpty(name))
             {
                 list1 = list1.Where(s => s.DName == name).ToList();
@@ -155,13 +159,9 @@ namespace LMS_API.Controllers.Wzb
             p.PageIndex = index;
             redis.Set<List<LMS_Ding>>("stulist1", list1);
             return p;
-
-
-
-
         }
         [Route("DShow3")]
-        [HttpGet]
+        [HttpGet]//11
         public Page1 DShow3(string name = "", int PageSize = 3, int PageCurrent = 1)
         {
             var list1 = new List<LMS_Ding>();
@@ -196,10 +196,6 @@ namespace LMS_API.Controllers.Wzb
             p.PageIndex = index;
             redis.Set<List<LMS_Ding>>("stulist2", list1);
             return p;
-
-
-
-
         }
         [Route("DShow4")]
         [HttpGet]
@@ -278,6 +274,7 @@ namespace LMS_API.Controllers.Wzb
         [HttpGet]
         public LMS_Ding XFan(int id) 
         {
+            log.Add("查看了客户列表", DateTime.Now, "/User/KeShow");
             return db.LMS_Ding.Where(s => s.DId == id).FirstOrDefault();
         }
         [Route("XFan1")]
@@ -297,6 +294,7 @@ namespace LMS_API.Controllers.Wzb
         [HttpGet]
         public LMS_Client XFan4(int id)
         {
+            log.Add("查看了客户详情", DateTime.Now, "/User/XFan4");
             using (IDbConnection db = new SqlConnection(conn))
             {
                 string sql1 = $"select * from LMS_Client where SId='{id}'";
@@ -349,7 +347,7 @@ namespace LMS_API.Controllers.Wzb
                 return db.SaveChanges();
         }
         [Route("BeiAdd")]
-        [HttpPost]
+        [HttpGet]
         public int BeiAdd(int id,string bei)
         {
             var d = db.LMS_Client.Find(id);
@@ -357,18 +355,99 @@ namespace LMS_API.Controllers.Wzb
             d.SBei = bei;
             return db.SaveChanges();
         }
-        [Route("BeiAdd")]
-        [HttpPost]
+        [Route("FuAdd")]
+        [HttpGet]
         public int FuAdd(int id, string bei,string fu)
         {
             var a = db.LMS_Ding.Find(id);
             db.Entry(a).State = EntityState.Modified;
             a.DFu = fu;
-            var d = db.LMS_Client.Find(a.DName);
+            var d = db.LMS_Client.Where(s => s.SName == a.DName).FirstOrDefault();
             db.Entry(d).State = EntityState.Modified;
             d.SBei = bei;
             return db.SaveChanges();
         }
+        [Route("ShouShow")]
+        [HttpGet]
+        public List<LMS_ShouJi> ShouShow(int id)
+        {
+            var a = db.LMS_ShouJi.Where(s => s.SJId == id).ToList();
+            return a;
+        }
+        [Route("Zt")]
+        [HttpGet]
+        public List<LMS_DState> Zt()
+        {
+                return db.LMS_DState.ToList();
+        }
+
+        [Route("HeiShow")]
+        [HttpGet]
+        public Page HeiShow(string name = "", int PageSize = 3, int PageCurrent = 1)
+        {
+            //using (IDbConnection db = new SqlConnection(conn))
+            //{
+            //    string sql = $"select SId,SName,SPhone,SCard,SSfrom,SXFrom,SKuan,SBei from LMS_Client";
+            //    var list = db.Query<LMS_Client>(sql).ToList();
+            //    return list;
+            //}
+            var list = from a in db.LMS_Client
+                       where a.SHei == 2
+                       //where a.SName == name
+                       select new LMS_Ke { SId = a.SId, SName = a.SName, SPhone = a.SPhone, SCard = a.SCard, SSfrom = a.SSfrom, SXFrom = a.SXFrom, SKuan = a.SKuan, SBei = a.SBei };
+
+            if (!string.IsNullOrEmpty(name))
+            {
+                list = from a in db.LMS_Client
+                       where a.SName == name&& a.SHei == 2
+                       select new LMS_Ke { SId = a.SId, SName = a.SName, SPhone = a.SPhone, SCard = a.SCard, SSfrom = a.SSfrom, SXFrom = a.SXFrom, SKuan = a.SKuan, SBei = a.SBei };
+
+            }
+            else
+            {
+                list = from a in db.LMS_Client
+                           //where a.SName == name
+                       where a.SHei == 2
+                       select new LMS_Ke { SId = a.SId, SName = a.SName, SPhone = a.SPhone, SCard = a.SCard, SSfrom = a.SSfrom, SXFrom = a.SXFrom, SKuan = a.SKuan, SBei = a.SBei, STime = a.STime };
+
+            }
+            if (PageCurrent < 1)
+            {
+                PageCurrent = 1;
+            }
+            int count = list.Count();
+            int index = 0;
+            if (count % PageSize == 0)
+            {
+                index = count / PageSize;
+            }
+            else
+            {
+                index = count / PageSize + 1;
+            }
+            if (PageCurrent > index)
+            {
+                PageCurrent = index;
+            }
+            Page p = new Page();
+            p.List1 = list.Skip((PageCurrent - 1) * PageSize).Take(PageSize).ToList();
+            p.PageCurrent = PageCurrent;
+            p.PageCount = count;
+            p.PageIndex = index;
+            return p;
+        } //分页
+
+        [Route("Yi")]
+        [HttpPost]
+        public int Yi(int id)
+        {
+
+                var d = db.LMS_Client.Find(id);
+                db.Entry(d).State = EntityState.Modified;
+                 d.SHei = 1;
+                return db.SaveChanges();
+        }
+
 
     }
 }

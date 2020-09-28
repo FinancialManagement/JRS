@@ -207,5 +207,9 @@ namespace LMS_API.Models.Hwc.Product
         /// 电子邮箱
         /// </summary>
         public string SEmail { get; set; }
+        /// <summary>
+        /// 订单状态
+        /// </summary>
+        public string Name { get; set; }
     }
 }

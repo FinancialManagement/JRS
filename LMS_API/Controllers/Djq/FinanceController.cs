@@ -18,7 +18,7 @@ namespace LMS_API.Controllers.Djq
 {
     [Produces("application/json", "application/xml")]
     [Route("api/[controller]")]
-    [EnableCors("cors")]//设置跨域处理的代理
+    [EnableCors("cors")]//设置跨域处理的代理域
     [ApiController]
     public class FinanceController : ControllerBase
     {

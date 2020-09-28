@@ -11,7 +11,7 @@ namespace LMS_API.Controllers
     public class LogHelper
     {
         private static string conn = "Data Source=10.3.158.43;Initial Catalog=LMS_Finance;User ID=sa;pwd=123456;";
-        public void Add(string RNei,DateTime RTime,string RFangfa) 
+        public void Add(string name,string RNei,DateTime RTime,string RFangfa) 
         {
             using (IDbConnection db=new SqlConnection(conn))
             {

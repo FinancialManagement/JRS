@@ -31,7 +31,6 @@ namespace LMS_API.Controllers.Wzb
         public LMScontext db;//11
         public UserController(LMScontext db) { this.db = db; }
         LogHelper log = new LogHelper();
-        string name = "";
         [Route("KeShow")]
         [HttpGet]
         public Page KeShow(string name="",int PageSize=3,int PageCurrent=1) 
@@ -42,8 +41,7 @@ namespace LMS_API.Controllers.Wzb
             //    var list = db.Query<LMS_Client>(sql).ToList();
             //    return list;
             //}
-            name = "小李子";
-            log.Add("登录了系统",DateTime.Now,"/User/KeShow");
+            log.Add("小李子","登录了系统",DateTime.Now,"/User/KeShow");
             var list = from a in db.LMS_Client
                            //where a.SName == name
                        select new LMS_Ke { SId = a.SId, SName = a.SName, SPhone = a.SPhone, SCard = a.SCard, SSfrom = a.SSfrom, SXFrom = a.SXFrom, SKuan = a.SKuan, SBei = a.SBei };
@@ -274,7 +272,7 @@ namespace LMS_API.Controllers.Wzb
         [HttpGet]
         public LMS_Ding XFan(int id) 
         {
-            log.Add("查看了客户列表", DateTime.Now, "/User/KeShow");
+            log.Add("小李子","查看了客户列表", DateTime.Now, "/User/KeShow");
             return db.LMS_Ding.Where(s => s.DId == id).FirstOrDefault();
         }
         [Route("XFan1")]
@@ -294,7 +292,7 @@ namespace LMS_API.Controllers.Wzb
         [HttpGet]
         public LMS_Client XFan4(int id)
         {
-            log.Add("查看了客户详情", DateTime.Now, "/User/XFan4");
+            log.Add("小李子","查看了客户详情", DateTime.Now, "/User/XFan4");
             using (IDbConnection db = new SqlConnection(conn))
             {
                 string sql1 = $"select * from LMS_Client where SId='{id}'";

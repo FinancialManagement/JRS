@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Routing.Constraints;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using NPOI.SS.Util;
 
 namespace LMS_API.Controllers.Hwc
 {
@@ -141,7 +142,7 @@ namespace LMS_API.Controllers.Hwc
         {
             using (IDbConnection db = new SqlConnection(conn))
             {
-                string sql = $"select * from LMS_Client c join LMS_Ding d on c.SId=d.DId join RepaymentSchedule r on d.DId=r.Id";
+                string sql = $"select * from LMS_Client l join LMS_Ding d on l.SName=d.DName join LMS_DState e on d.DSzt=e.Id where Id between 10 and 17";
                 var list = db.Query<Client>(sql).ToList();
 
                 if (!string.IsNullOrEmpty(name))
@@ -276,10 +277,24 @@ namespace LMS_API.Controllers.Hwc
         [Route("UpdDJie")]
         public int UpdDJie(int id)
         {
-                var a = db.RepaymentSchedule.Where(s => s.DingWai == id && s.RepaymentMoney == 0).FirstOrDefault();
+
+            var a = db.RepaymentSchedule.Where(s => s.DingWai == id && s.RepaymentMoney == 0).FirstOrDefault();
+            var b = db.LMS_Ding.Where(s => s.DId == id).FirstOrDefault();
+            if (a.Periods==b.DCount)
+            {
+                db.Entry(b).State = EntityState.Modified;
                 db.Entry(a).State = EntityState.Modified;
-                a.RepaymentMoney =1;
+                b.DSzt = 13;
+                a.RepaymentMoney = 1;
                 return db.SaveChanges();
+            }
+            else
+            {
+                db.Entry(a).State = EntityState.Modified;
+                a.RepaymentMoney = 1;
+                return db.SaveChanges();
+            }
+           
         }
         /// <summary>
         /// 催收负责人下拉
@@ -409,6 +424,75 @@ namespace LMS_API.Controllers.Hwc
                 string sql = $"select * from RepaymentSchedule where Id={id}";
                 return db.Query<RepaymentSchedule>(sql).FirstOrDefault();
             }
+        }
+        /// <summary>
+        /// 一次结清
+        /// </summary>
+        /// <returns></returns>
+        [HttpPut]
+        [Route("UpdJie")]
+        public int UpdJie(int id)
+        {
+            var a = db.RepaymentSchedule.Where(s => s.DingWai == id && s.RepaymentMoney == 0).FirstOrDefault();
+            db.Entry(a).State = EntityState.Modified;
+            a.RepaymentMoney = 1;
+            return db.SaveChanges();
+        }
+        /// <summary>
+        /// 逾期
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("Yuqi")]
+        public Models.Hwc.Page Yuqi(string name = "", int PageSize = 3, int PageCurrent = 1)
+        {
+            using (IDbConnection db = new SqlConnection(conn))
+            {
+                string sql = $"select * from LMS_Client l join LMS_Ding d on l.SName=d.DName join LMS_DState e on d.DSzt=e.Id where Id between 10 and 17 and not Id=10 and not Id=11 and not Id=13 and not Id=14 and not Id=15 and not Id=16 and not Id=17";
+                var list = db.Query<Client>(sql).ToList();
+                if (!string.IsNullOrEmpty(name))
+                {
+                    list = db.Query<Client>(sql).Where(m => m.DName.Contains(name)).ToList();
+                }
+                else
+                {
+                    list = db.Query<Client>(sql).ToList();
+                }
+                if (PageCurrent < 1)
+                {
+                    PageCurrent = 1;
+                }
+                int count = list.Count();
+                int index = 0;
+                if (count % PageSize == 0)
+                {
+                    index = count / PageSize;
+                }
+                else
+                {
+                    index = count / PageSize + 1;
+                }
+                if (PageCurrent > index)
+                {
+                    PageCurrent = index;
+                }
+                Models.Hwc.Page p = new Models.Hwc.Page();
+                p.List1 = list.Skip((PageCurrent - 1) * PageSize).Take(PageSize).ToList();
+                p.PageCurrent = PageCurrent;
+                p.PageCount = count;
+                p.PageIndex = index;
+                return p;
+            }
+        }
+        [HttpPut]
+        [Route("CuiShou")]
+        public int CuiShou(int id)
+        {
+            var a = db.LMS_Ding.Find(id);
+            db.Entry(a).State = EntityState.Modified;
+            a.DSzt = 17;
+            return db.SaveChanges();
         }
     }
 }

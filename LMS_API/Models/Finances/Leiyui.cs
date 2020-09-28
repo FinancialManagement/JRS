@@ -12,8 +12,5 @@ namespace LMS_API.Models.Finances
         public string msg { get; set; }
         public int count { get; set; }
         public List<LMS_Ding> data { get; set; }
-
-        public List<HuanMoney> data2 { get; set; }
-
     }
 }

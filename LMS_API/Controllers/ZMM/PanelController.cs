@@ -50,9 +50,9 @@ namespace LMS_API.Controllers.ZMM
         //总盈亏
         [Route("GetShow2")]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<LMS_Ding>>> GetShow2()
+        public  LMS_Ding GetShow2()
         {
-            return await db.LMS_Ding.ToListAsync();
+            return db.LMS_Ding.FirstOrDefault();
         }
         //总回款金额
         [Route("Showget1")]
@@ -85,7 +85,7 @@ namespace LMS_API.Controllers.ZMM
         [HttpGet]
         public async Task<ActionResult<IEnumerable<LMS_Ding>>> GetShow7()
         {
-            return await db.LMS_Ding.ToListAsync();
+            return await db.LMS_Ding.ToListAsync();//11
         }
 
         //贷后
@@ -95,9 +95,9 @@ namespace LMS_API.Controllers.ZMM
         {
             return await db.LMS_Ding.ToListAsync();
         }
+        
 
-      
-    
+
 
 
     }
